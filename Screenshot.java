@@ -34,6 +34,7 @@ import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Build.VERSION;
+import android.os.Handler;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -74,6 +75,7 @@ public class Screenshot {
     private String filePathBackup;
     private String fileNameBackup;
     private OnResultListener onResultListener;
+    private final Handler androidUIHandler = new Handler();
 
     
     public Screenshot(Context context) {         
@@ -94,54 +96,41 @@ public class Screenshot {
     }
 
     public void TakeScreenshot() {
-    new GetScreenshot().execute("");
+      androidUIHandler.post(new Runnable() {
+        public void run() {
+        Take();
+        }
+      }); 
     }
 
-    private class GetScreenshot extends AsyncTask<String, String, String>{
-        @Override
-        protected String doInBackground(String... url) {
-        View view = activity.getWindow().getDecorView().getRootView();
-        view.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-        bitmapBackup = bitmap;
-        view.setDrawingCacheEnabled(false);
-		
-        return SaveUtil(bitmap);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (onResultListener != null) {
-                onResultListener.result(true, result);
-            }
-        
-        MediaScannerConnection.scanFile(context, new String[] { result }, new String[] { "image/*" }, null);
-            if (preview) {
-                Preview();
-            }
-            if (notification) {
-                Notification();
-            }
-        }
+    private void Take() {
+      View view = activity.getWindow().getDecorView().getRootView();
+      view.setDrawingCacheEnabled(true);
+      Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+      bitmapBackup = bitmap;
+      view.setDrawingCacheEnabled(false);
+      
+      SaveUtil(bitmap);
+      MediaScannerConnection.scanFile(context, new String[] { filePathBackup }, new String[] { "image/*" }, null);
     }
 
-    private interface OnResultListener {
-        public void result(boolean success, String result);
+    public interface OnResultListener {
+      public void result(boolean success, String result);
     }
    
     public void setCallback(OnResultListener listener) {
-    	onResultListener = listener;
+      this.onResultListener = listener;
     }
     
     public void setFileName(String name) {
-    this.fileName = name;
+      this.fileName = name;
     }
 
     public String getFileName() {
-    return this.fileName;
+      return this.fileName;
     }
 
-    private String SaveUtil(Bitmap bmOut) {
+    private void SaveUtil(Bitmap bmOut) {
     ByteArrayOutputStream ostream = new ByteArrayOutputStream();
     bmOut.compress(Bitmap.CompressFormat.PNG, 0 , ostream);
     
@@ -167,7 +156,15 @@ public class Screenshot {
     filePathBackup = (image != null) ? image.getAbsolutePath() : "There was a problem";
     fileNameBackup = (image != null) ? image.getName() : "There was a problem";
     //image is null should never happen
-    return filePathBackup;	
+        if (this.preview) {
+          Preview();
+        }
+        if (this.notification) {
+          Notification();
+        }  
+        if (onResultListener != null) {
+          onResultListener.result(true, filePathBackup);
+        }
     }
 
     public void ShowPreview(boolean enabled) {

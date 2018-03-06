@@ -39,6 +39,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -229,7 +230,14 @@ public class Screenshot {
     layout = new LinearLayout(context);
     imageView = new ImageView(activity);
     layout.setOrientation(LinearLayout.VERTICAL);
-    layout.setPadding(15, 19, 15, 19);
+    Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        if (display.getRotation() == 0 || display.getRotation() == 2) {
+            //for portrait mode
+        	layout.setPadding(15, 19, 15, 19);
+        } else {
+        	//for landscape mode
+            layout.setPadding(27, 0, 27, 0);
+        }
     layout.setBackgroundColor(-1);//white
     imageView.setImageBitmap(bitmapBackup);
 	
@@ -245,6 +253,7 @@ public class Screenshot {
 	
     DisplayMetrics metrics = new DisplayMetrics();
     activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
     int height = (int) (metrics.heightPixels*0.86);
     int width = (int) (metrics.widthPixels*0.85);
 

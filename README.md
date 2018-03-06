@@ -72,6 +72,7 @@ AndroidMainfest.xml
 *You do not need to add SDK version checks by yourself. This does the library by itself.*
 
 ## Download(jar)
+Version 1.0<br>
 [Screenshot.jar](Screenshot.jar)
 
 ## Changelog

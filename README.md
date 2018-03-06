@@ -133,7 +133,7 @@ Version 1.0<br>
 [Screenshot.jar](Screenshot.jar)
 
 ## Known bugs/issues
-You can find [here](github/NmdOfficial/Screenshot/issues) the known bugs/issues
+You can find [here](https://github.com/NmdOfficial/Screenshot/issues) the known bugs/issues
 
 ## Changelog
 Watch [here](Changelog.md) the version changes

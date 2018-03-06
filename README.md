@@ -73,6 +73,49 @@ AndroidMainfest.xml
 
 *You do not need to add SDK version checks by yourself. This does the library by itself.*
 
+## Exampe code
+
+```java
+package com.YOURNAME.YOURNAME;
+
+import android.app.Activity;
+import android.content.Context;
+import android.widget.TextView;
+import android.graphics.Color;
+import com.nmd.android.support.Screenshot;
+...
+
+public class YourClass extends Activity {
+  private Context context;
+  private TextView txt;
+  private Screenshot screenshot;
+
+    public YourClass (...) {
+      this.context = getContext();
+      Initialize();
+    }
+    
+    private void Initialize() {
+	  txt = (TextView)findViewById(R.id.editText);
+      screenshot = new Screenshot(this.context);
+    }
+
+    public void Take() {
+      screenshot.NotificationTitle("My screenshot title");
+      screenshot.setCallback(new OnResultListener() {
+        @Override
+        public void result(boolean success, String result) {
+          txt.setText(result);
+          txt.setTextColor(success ? Color.GREEN : Color.RED);
+          // if success is true then set text color to green, else red
+        }
+      });
+      //After you have done your settings let's take the screenshot
+      screenshot.TakeScreenshot();
+    }
+}
+```
+
 ## Download(jar)
 Version 1.0<br>
 [Screenshot.jar](Screenshot.jar)

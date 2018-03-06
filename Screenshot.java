@@ -70,6 +70,7 @@ public class Screenshot {
     private String notificationTitle;
     private String notificationShareTitle;
     private boolean notificationBigStyle;
+    private boolean notificationButton;
     private String filePathBackup;
     private String fileNameBackup;
     private OnResultListener onResultListener;
@@ -88,6 +89,7 @@ public class Screenshot {
       this.notificationTitle = "Screenshot..";
       this.notificationShareTitle = "Share";
       this.notificationBigStyle = false;
+      this.notificationButton = true;
       Log.d(LOG_TAG,"Screenshot Created");
     }
 
@@ -136,7 +138,7 @@ public class Screenshot {
     }
 
     public String getFileName() {
-    return fileName;
+    return this.fileName;
     }
 
     private String SaveUtil(Bitmap bmOut) {
@@ -162,49 +164,58 @@ public class Screenshot {
                 onResultListener.result(false, e.getLocalizedMessage().toString());
             }
         }
-    filePathBackup = image.getAbsolutePath();
-    fileNameBackup = image.getName();
+    filePathBackup = (image != null) ? image.getAbsolutePath() : "There was a problem";
+    fileNameBackup = (image != null) ? image.getName() : "There was a problem";
+    //image is null should never happen
     return filePathBackup;	
     }
 
     public void ShowPreview(boolean enabled) {
-    preview = enabled;
+      this.preview = enabled;
     }
 	
     public boolean ShowPreview() {
-    return preview;
+    return this.preview;
     }
 	
     public void ShowNotification(boolean enabled) {
-    notification = enabled;
+      this.notification = enabled;
     }
 	
     public boolean ShowNotification() {
-    return notification;
+    return this.notification;
     }
 	
     public void NotificationTitle(String title){
-    notificationTitle = title;   	
+      this.notificationTitle = title;   	
     }
 	
     public String NotificationTitle() {
-    return notificationTitle;
+    return this.notificationTitle;
     }
 	
     public void NotificationShareTitle(String title){
-    notificationShareTitle = title;   	
+      this.notificationShareTitle = title;   	
     }
 	
     public String NotificationShareTitle() {
-    return notificationShareTitle;
+    return this.notificationShareTitle;
     }
 	
     public void NotificationBigStyle(boolean enabled){
-    notificationBigStyle = enabled;   	
+      this.notificationBigStyle = enabled;   	
     }
 	
     public boolean NotificationBigStyle() {
-    return notificationBigStyle;
+    return this.notificationBigStyle;
+    }
+    
+    public void NotificationShareButton(boolean enabled){
+      this.notificationButton = enabled;   	
+    }
+    	
+    public boolean NotificationShareButton() {
+      return this.notificationButton;
     }
 	
     public void AllowScreenshots(boolean enabled){
@@ -218,8 +229,8 @@ public class Screenshot {
     private void Preview() {
     AlertDialog.Builder alert = new AlertDialog.Builder(activity);
 
-    layout = (LinearLayout) new LinearLayout(context);
-    imageView = (ImageView) new ImageView(activity);
+    layout = new LinearLayout(context);
+    imageView = new ImageView(activity);
     layout.setOrientation(LinearLayout.VERTICAL);
     layout.setPadding(15, 19, 15, 19);
     layout.setBackgroundColor(-1);//white
@@ -267,9 +278,11 @@ public class Screenshot {
         shareIntent.putExtra("EXTRA_DETAILS_ID", ID);
         shareIntent.setType("image/*");
 
-        PendingIntent detailsPendingIntent = PendingIntent.getActivity(context, ID, shareIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        builder.addAction(android.R.drawable.ic_menu_share, notificationShareTitle, detailsPendingIntent);
-        //notificationManager.cancel(ID);
+            if (notificationButton) {
+                PendingIntent detailsPendingIntent = PendingIntent.getActivity(context, ID, shareIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                builder.addAction(android.R.drawable.ic_menu_share, notificationShareTitle, detailsPendingIntent);
+                //notificationManager.cancel(ID);
+            }
         }
 	
     builder.setAutoCancel(true);

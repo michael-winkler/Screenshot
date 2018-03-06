@@ -40,7 +40,18 @@ AndroidMainfest.xml
 
 ```
 
-## Callback
+## Interface
+
+| type | name |
+| --- | --- |
+| `interface` | OnResultListener<br>*Interface definition for a callback to be invoked when a screenshot was created.* |
+
+Public methods
+
+| type | function |
+| --- | --- |
+| `abstract void` | result(boolean success, String result)<br>*Called when a screenshot was created.* |
+
 ```java
 .setCallback(new OnResultListener() {
     @Override
@@ -50,6 +61,7 @@ AndroidMainfest.xml
 });
 ```
 
+## Public methods
 
 | type | function | description | default value | min api |
 | --- | --- | --- | --- | --- |
@@ -57,17 +69,17 @@ AndroidMainfest.xml
 | `void` | setFileName(String name) | *The filename for the taken screenshot.* | \"Screenshot.png\" |  14 |
 | `string` | getFileName() | *Returns the given screenshot filename.* | - |  14 |
 | `void` | ShowPreview(boolean enabled) | *If enabled you will see a short preview animation after the screenshot is taken.* | true |  14 |
-| `boolean` | ShowPreview() | *Returns true/false if ShowPreview(...) is enabled/disabled.* | - |  14 |
+| `boolean` | ShowPreview() | *Returns true/false if* `ShowPreview(...)` *is enabled/disabled.* | - |  14 |
 | `void` | ShowNotification(boolean enabled) | *If enabled you will see a notification in the statusbar after the screenshot is taken.* | true |  14 |
-| `boolean` | ShowNotification() | *Returns true/false if ShowNotification(...) is enabled/disabled.* | - |  14 |
+| `boolean` | ShowNotification() | *Returns true/false if* `ShowNotification(...)` *is enabled/disabled.* | - |  14 |
 | `void` | NotificationTitle(String name) | *The title text for the notification.* | \"Screenshot..\" |  14 |
 | `string` | NotificationTitle() | *Returns the given notification title text.* | - |  14 |
-| `void` | NotificationShareTitle(String name) | *The share button text for the notification if Show Notification(...) is enabled.* | "Share" |   16 |
+| `void` | NotificationShareTitle(String name) | *The share button text for the notification if* `Show Notification(...)` *is enabled.* | "Share" |   16 |
 | `string` | NotificationShareTitle() | *Returns the given notification share title text.* | - |  16 |
 | `void` | NotificationBigStyle(boolean enabled) | *If enabled you will see a notification with \"big style\" in the statusbar after the screenshot is taken.* | true |  16 |
-| `boolean` | NotificationBigStyle() | *Returns true/false if NotificationBigStyle(...) is enabled/disabled.* | - |  16 |
+| `boolean` | NotificationBigStyle() | *Returns true/false if* `NotificationBigStyle(...)` *is enabled/disabled.* | - |  16 |
 | `void` | NotificationShareButton(boolean enabled) | *If enabled you will see a notification with a share button after the screenshot is taken.* | true |  16 |
-| `boolean` | NotificationShareButton() | *Returns true/false if NotificationShareButton(...) is enabled/disabled.* | - |  16 |
+| `boolean` | NotificationShareButton() | *Returns true/false if* `NotificationShareButton(...)` *is enabled/disabled.* | - |  16 |
 | `void` | AllowScreenshots(boolean enabled) | *This feature allows users of your app to make or ban screenshots of their app.<br>If disabled and a person tries to make a screenshot, they will receive then a default system message that this is not possible.* | - |  1 |
 
 
@@ -96,7 +108,7 @@ public class YourClass extends Activity {
     }
     
     private void Initialize() {
-	  txt = (TextView)findViewById(R.id.editText);
+      txt = (TextView)findViewById(R.id.editText);
       screenshot = new Screenshot(this.context);
     }
 

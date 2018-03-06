@@ -53,7 +53,7 @@ Public methods
 | `abstract void` | result(boolean success, String result)<br>*Called when a screenshot was created.* |
 
 ```java
-.setCallback(new OnResultListener() {
+.setCallback(new Screenshot.OnResultListener() {
     @Override
     public void result(boolean success, String result) {
       // your code here.        
@@ -114,7 +114,7 @@ public class YourClass extends Activity {
 
     public void Take() {
       screenshot.NotificationTitle("My screenshot title");
-      screenshot.setCallback(new OnResultListener() {
+      screenshot.setCallback(new Screenshot.OnResultListener() {
         @Override
         public void result(boolean success, String result) {
           txt.setText(result);
@@ -132,8 +132,11 @@ public class YourClass extends Activity {
 Version 1.0<br>
 [Screenshot.jar](Screenshot.jar)
 
+## Known bugs/issues
+You can find [here](github/NmdOfficial/Screenshot/issues) the known bugs/issues
+
 ## Changelog
-[Watch here the version changes](Changelog.md)
+Watch [here](Changelog.md) the version changes
 
 ## License
 ```

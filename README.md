@@ -66,6 +66,8 @@ AndroidMainfest.xml
 | `string` | NotificationShareTitle() | *Returns the given notification share title text.* | - |  16 |
 | `void` | NotificationBigStyle(boolean enabled) | *If enabled you will see a notification with \"big style\" in the statusbar after the screenshot is taken.* | true |  16 |
 | `boolean` | NotificationBigStyle() | *Returns true/false if NotificationBigStyle(...) is enabled/disabled.* | - |  16 |
+| `void` | NotificationShareButton(boolean enabled) | *If enabled you will see a notification with a share button after the screenshot is taken.* | true |  16 |
+| `boolean` | NotificationShareButton() | *Returns true/false if NotificationShareButton(...) is enabled/disabled.* | - |  16 |
 | `void` | AllowScreenshots(boolean enabled) | *This feature allows users of your app to make or ban screenshots of their app.<br>If disabled and a person tries to make a screenshot, they will receive then a default system message that this is not possible.* | - |  1 |
 
 

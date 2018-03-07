@@ -36,8 +36,17 @@ AndroidMainfest.xml
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <application ...
 </manifest>
+```
 
+Don't forget to set MIN and TARGET SDK values:
+```java
+<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="22"/>
+```
 
+Android 8:
+```
+Do not set target sdk to 26.
+If set to 26 you will see no notification function which the library you gives.
 ```
 
 ## Interface

@@ -74,7 +74,8 @@ Public methods
 
 | type | function | description | default value | min api |
 | --- | --- | --- | --- | --- |
-| `void` | TakeScreenshot() | *Take a screenshot of the current visible screen.* | - |  14/16 |
+| `void` | TakeScreenshot() | *Take a screenshot of the current visible screen.* | - |  14 |
+| `void` | TakeScreenshotFromView() | *Take a screenshot of any visible view.* | - |  14 |
 | `void` | setFileName(String name) | *The filename for the taken screenshot.* | \"Screenshot.png\" |  14 |
 | `string` | getFileName() | *Returns the given screenshot filename.* | - |  14 |
 | `void` | ShowPreview(boolean enabled) | *If enabled you will see a short preview animation after the screenshot is taken.* | true |  14 |

@@ -50,12 +50,12 @@ Public methods
 
 | type | function |
 | --- | --- |
-| `abstract void` | result(boolean success, String result)<br>*Called when a screenshot was created.* |
+| `abstract void` | result(boolean success, String filePath, Bitmap bitmap)<br>*Called when a screenshot was created.* |
 
 ```java
 .setCallback(new Screenshot.OnResultListener() {
     @Override
-    public void result(boolean success, String result) {
+    public void result(boolean success, String filePath, Bitmap bitmap) {
       // your code here.        
     }
 });
@@ -117,8 +117,8 @@ public class YourClass extends Activity {
       screenshot.NotificationTitle("My screenshot title");
       screenshot.setCallback(new Screenshot.OnResultListener() {
         @Override
-        public void result(boolean success, String result) {
-          txt.setText(result);
+        public void result(boolean success, String filePath, Bitmap bitmap) {
+          txt.setText(filePath);
           txt.setTextColor(success ? Color.GREEN : Color.RED);
           // if success is true then set text color to green, else red
         }

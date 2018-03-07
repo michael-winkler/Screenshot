@@ -19,9 +19,6 @@ package com.nmd.android.support;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.Notification.Style;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 
 import android.content.Context;
@@ -56,6 +53,11 @@ import java.lang.System;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.BigPictureStyle;
+import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.app.NotificationManagerCompat;
+
 
 @SuppressWarnings("unused")
 public class Screenshot {
@@ -75,8 +77,10 @@ public class Screenshot {
     private boolean notificationButton;
     private String filePathBackup;
     private String fileNameBackup;
+    private float dimAmount;
     private OnResultListener onResultListener;
     private final Handler androidUIHandler = new Handler();
+    private NotificationManagerCompat mNotificationManagerCompat;
 
     
     public Screenshot(Context context) {         
@@ -93,30 +97,43 @@ public class Screenshot {
       this.notificationShareTitle = "Share";
       this.notificationBigStyle = false;
       this.notificationButton = true;
+      this.dimAmount = 0.5f;
+      this.mNotificationManagerCompat = NotificationManagerCompat.from(this.context);
       Log.d(LOG_TAG,"Screenshot Created");
     }
 
     public void TakeScreenshot() {
-      androidUIHandler.post(new Runnable() {
-        public void run() {
-        Take();
-        }
-      }); 
-    }
-
-    private void Take() {
       View view = activity.getWindow().getDecorView().getRootView();
-      view.setDrawingCacheEnabled(true);
-      Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-      bitmapBackup = bitmap;
-      view.setDrawingCacheEnabled(false);
-      
-      SaveUtil(bitmap);
-      MediaScannerConnection.scanFile(context, new String[] { filePathBackup }, new String[] { "image/*" }, null);
+      Take(view);
+    }
+    
+    public void TakeScreenshotFromView(View view) {
+      Take(view);
+    }
+    
+    private void Take(View view) {
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+            	androidUIHandler.post(new Runnable() {
+                    public void run() {
+                    view.setDrawingCacheEnabled(true);
+                    view.buildDrawingCache(true);
+                    Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+                    bitmapBackup = bitmap;
+                    view.setDrawingCacheEnabled(false);
+                        
+                    SaveUtil(bitmap);
+                    MediaScannerConnection.scanFile(context, new String[] { filePathBackup }, new String[] { "image/*" }, null);
+                    t.cancel();
+                    }
+                }); 
+            }
+        }, 75);
     }
 
     public interface OnResultListener {
-      public void result(boolean success, String result);
+      public void result(boolean success, String filePath, Bitmap bitmap);
     }
    
     public void setCallback(OnResultListener listener) {
@@ -138,33 +155,33 @@ public class Screenshot {
     FileOutputStream fostream = null;
     File image = null;
         try {
-        	image = new File(Environment.getExternalStorageDirectory()+"/"+fileName);
+            image = new File(Environment.getExternalStorageDirectory()+"/"+fileName);
             fostream = new FileOutputStream(image);
             fostream.write(ostream.toByteArray());
             fostream.flush();
             fostream.close();
         } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, e.getLocalizedMessage());
+            Log.e(LOG_TAG, e.getMessage());
             if (onResultListener != null) {
-                onResultListener.result(false, e.getLocalizedMessage().toString());
+                onResultListener.result(false, e.getMessage(), null);
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getLocalizedMessage());
+            Log.e(LOG_TAG, e.getMessage());
             if (onResultListener != null) {
-                onResultListener.result(false, e.getLocalizedMessage().toString());
+                onResultListener.result(false, e.getMessage(), null);
             }
         }
     filePathBackup = (image != null) ? image.getAbsolutePath() : "There was a problem";
     fileNameBackup = (image != null) ? image.getName() : "There was a problem";
     //image is null should never happen
         if (this.preview) {
-          Preview();
+            Preview();
         }
         if (this.notification) {
-          Notification();
+        	NewNotification();
         }  
         if (onResultListener != null) {
-          onResultListener.result(true, filePathBackup);
+            onResultListener.result(true, filePathBackup, bitmapBackup);
         }
     }
 
@@ -223,7 +240,15 @@ public class Screenshot {
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         }
     }
-	
+
+    public void setDimAmount(float amount) {
+      this.dimAmount = amount;
+    }
+    
+    public float getDimAmount() {
+      return this.dimAmount;
+    }
+    
     private void Preview() {
     AlertDialog.Builder alert = new AlertDialog.Builder(activity);
 
@@ -245,10 +270,8 @@ public class Screenshot {
     alert.setView(layout);
 	
     final AlertDialog dialog = alert.create();
-        if (VERSION.SDK_INT >= 21) {
-            dialog.getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
-
+    dialog.getWindow().setDimAmount(this.dimAmount);
+        
     dialog.show();
 	
     DisplayMetrics metrics = new DisplayMetrics();
@@ -269,50 +292,44 @@ public class Screenshot {
             }
         }, 1250);
     }
-	
-    @SuppressWarnings("deprecation")
-	private void Notification() {
-	Notification.Builder builder = new Notification.Builder(context);
-    builder.setSmallIcon(android.R.drawable.ic_menu_gallery);
-    //https://developer.android.com/reference/android/R.drawable.html#ic_menu_gallery
-    int ID = (int) System.currentTimeMillis();
+    
+    private void NewNotification() {
+      int ID = (int) System.currentTimeMillis();
+    	
+      NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+      // support v4 version 26.1.0
+      //.setChannelId(String.valueOf(System.currentTimeMillis()))
+      .setContentTitle(notificationTitle)
+      .setContentText(fileNameBackup)
+      .setSmallIcon(android.R.drawable.ic_menu_gallery)
+      .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+      .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+      .setAutoCancel(true);
+      
+      if (VERSION.SDK_INT >= 16) {
+          Intent shareIntent = new Intent();
+          shareIntent.setAction(Intent.ACTION_SEND);
+          shareIntent.putExtra(Intent.EXTRA_STREAM, android.net.Uri.parse(filePathBackup));
+          shareIntent.putExtra("EXTRA_DETAILS_ID", ID);
+          shareIntent.setType("image/*");
 
-    if (VERSION.SDK_INT >= 16) {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, android.net.Uri.parse(filePathBackup));
-        shareIntent.putExtra("EXTRA_DETAILS_ID", ID);
-        shareIntent.setType("image/*");
-
-            if (notificationButton) {
-                PendingIntent detailsPendingIntent = PendingIntent.getActivity(context, ID, shareIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                builder.addAction(android.R.drawable.ic_menu_share, notificationShareTitle, detailsPendingIntent);
-                //notificationManager.cancel(ID);
-            }
-        }
-	
-    builder.setAutoCancel(true);
-    builder.setContentTitle(notificationTitle);
-    builder.setContentText(fileNameBackup);
-	
-    if (VERSION.SDK_INT >= 16 && notificationBigStyle) {
-        Notification.BigPictureStyle bigPictureStyle = new Notification.BigPictureStyle();
-        bigPictureStyle.setBigContentTitle(notificationTitle);
-        bigPictureStyle.setSummaryText(fileNameBackup);
-        bigPictureStyle.bigPicture(bitmapBackup);
-        builder.setStyle(bigPictureStyle);
-	}
-	
-    Intent intent = new Intent();
-    intent.setAction(Intent.ACTION_VIEW);
-    intent.setDataAndType(android.net.Uri.parse(filePathBackup), "image/*");
-    builder.setContentIntent(PendingIntent.getActivity(context, ID, intent, 0));
-	
-    Notification build = builder.build();
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    build.flags |= Notification.FLAG_AUTO_CANCEL;
-    notificationManager.notify(0, build);
+          if (notificationButton) {
+        	  //Action buttons depend on expanded notifications, which are only available in Android 4.1 and later.
+              PendingIntent detailsPendingIntent = PendingIntent.getActivity(context, ID, shareIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+              notificationBuilder.addAction(android.R.drawable.ic_menu_share, notificationShareTitle, detailsPendingIntent);
+              //notificationBuilder.cancel(ID);
+          }
+      }
+      
+      if (notificationBigStyle) {
+          notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmapBackup));
+      }
+      
+      Intent intent = new Intent();
+      intent.setAction(Intent.ACTION_VIEW);
+      intent.setDataAndType(android.net.Uri.parse(filePathBackup), "image/*");
+      notificationBuilder.setContentIntent(PendingIntent.getActivity(context, ID, intent, 0));
+      
+      mNotificationManagerCompat.notify(0, notificationBuilder.build());
     }
-
-
 }

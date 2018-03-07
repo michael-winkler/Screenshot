@@ -81,9 +81,10 @@ Public methods
 | `void` | NotificationShareButton(boolean enabled) | *If enabled you will see a notification with a share button after the screenshot is taken.* | true |  16 |
 | `boolean` | NotificationShareButton() | *Returns true/false if* `NotificationShareButton(...)` *is enabled/disabled.* | - |  16 |
 | `void` | AllowScreenshots(boolean enabled) | *This feature allows users of your app to make or ban screenshots of their app.<br>If disabled and a person tries to make a screenshot, they will receive then a default system message that this is not possible.* | - |  1 |
+| `void` | setDimAmount(float amount) | *Set the amount of dim behind the preview window if* `ShowPreview(...)` *is enabled. Use '0.0' for no dim and '1.0' for full dim.* | 0.5f |  14 |
+| `float` | getDimAmount() | *Returns the amount from `setDimAmount(...)` .* | - |  14 |
 
-
-*You do not need to add SDK version checks by yourself. This does the library by itself.*
+*You do not need to add SDK version checks by yourself. This does the library for you.*
 
 ## Exampe code
 

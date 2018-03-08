@@ -155,6 +155,9 @@ You can find [here](https://github.com/NmdOfficial/Screenshot/issues) the known 
 ## Changelog
 Watch [here](Changelog.md) the version changes
 
+## Screenshots
+![animation](https://github.com/NmdOfficial/Screenshot/blob/master/Images/Animation.gif)
+
 ## License
 ```
 Copyright 2018 Author @NMD [Next Mobile Development]

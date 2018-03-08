@@ -165,3 +165,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+## Last words
+If you like this library feel free to "star" it:<br>
+![star](https://github.com/NmdOfficial/Screenshot/blob/master/Images/star.png)
+
+Offical E-MAIL:<br>
+[nmdofficialhelp@gmail.com](mailto:nmdofficialhelp@gmail.com)

@@ -305,6 +305,7 @@ public class Screenshot {
 	
     layout.addView(imageView);
     alert.setView(layout);
+    alert.setCancelable(false);
 	
     final AlertDialog dialog = alert.create();
     dialog.getWindow().setDimAmount(this.dimAmount);
@@ -334,8 +335,6 @@ public class Screenshot {
       int ID = (int) System.currentTimeMillis();
     	
       NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "CHANNEL_ID")
-      // support v4 version 26.1.0
-      //.setChannelId(String.valueOf(System.currentTimeMillis()))
       .setContentTitle(notificationTitle)
       .setContentText(fileNameBackup)
       .setSmallIcon(android.R.drawable.ic_menu_gallery)

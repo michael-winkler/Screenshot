@@ -177,3 +177,6 @@ If you like this library feel free to "star" it:<br>
 
 Offical E-MAIL:<br>
 [nmdofficialhelp@gmail.com](mailto:nmdofficialhelp@gmail.com)
+
+
+This library has been successfully tested with the latest version of Android Studio.

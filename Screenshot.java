@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import android.graphics.Bitmap;
 
@@ -81,6 +82,10 @@ public class Screenshot {
     private OnResultListener onResultListener;
     private final Handler androidUIHandler = new Handler();
     private NotificationManagerCompat mNotificationManagerCompat;
+    private PackageManager packageManager;
+    private String currentPackageName;
+    private int readPermission;
+    private int writePermission;
 
     
     public Screenshot(Context context) {         
@@ -99,6 +104,10 @@ public class Screenshot {
       this.notificationButton = true;
       this.dimAmount = 0.5f;
       this.mNotificationManagerCompat = NotificationManagerCompat.from(this.context);
+      this.packageManager = this.context.getPackageManager();
+      this.currentPackageName = this.context.getPackageName().toString();
+      this.readPermission = packageManager.checkPermission("android.permission.READ_EXTERNAL_STORAGE", this.currentPackageName);
+      this.writePermission = packageManager.checkPermission("android.permission.WRITE_EXTERNAL_STORAGE", this.currentPackageName);
       Log.d(LOG_TAG,"Screenshot Created");
     }
 
@@ -131,7 +140,24 @@ public class Screenshot {
             }
         }, 75);
     }
-
+    
+    public boolean arePermissionsGranted() {
+      return (this.readPermission == PackageManager.PERMISSION_GRANTED &&
+        	  this.writePermission == PackageManager.PERMISSION_GRANTED);
+    }
+    
+    public boolean isReadPermissionGranted() {
+      String currentPackageName = this.context.getPackageName().toString();
+      int readPermission = packageManager.checkPermission("android.permission.READ_EXTERNAL_STORAGE", currentPackageName);
+      return (this.readPermission == PackageManager.PERMISSION_GRANTED);
+    }
+    
+    public boolean isWritePermissionGranted() {
+      String currentPackageName = this.context.getPackageName().toString();
+      int writePermission = packageManager.checkPermission("android.permission.WRITE_EXTERNAL_STORAGE", currentPackageName);
+      return (writePermission == PackageManager.PERMISSION_GRANTED);
+    }
+    
     public interface OnResultListener {
       public void result(boolean success, String filePath, Bitmap bitmap);
     }
@@ -314,7 +340,7 @@ public class Screenshot {
           shareIntent.setType("image/*");
 
           if (notificationButton) {
-        	  //Action buttons depend on expanded notifications, which are only available in Android 4.1 and later.
+              //Action buttons depend on expanded notifications, which are only available in Android 4.1 and later.
               PendingIntent detailsPendingIntent = PendingIntent.getActivity(context, ID, shareIntent, PendingIntent.FLAG_CANCEL_CURRENT);
               notificationBuilder.addAction(android.R.drawable.ic_menu_share, notificationShareTitle, detailsPendingIntent);
               //notificationBuilder.cancel(ID);

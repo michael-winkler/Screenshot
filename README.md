@@ -1,9 +1,12 @@
 # Screenshot
-A android library to take screenshots
 
 [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Total Downloads](https://img.shields.io/github/downloads/NmdOffical/Screenshot/total.svg)]()
+
+A new and nice working android library to take screenshots which provides many functions.<br>
+If enabled you will see a screenshot preview like you know it from the official android screenshot option.<br>
+While the screenshot is being taken, you will also hear the shutter click sound for android 4.1+ devices.<br>
 
 
 ## Usage

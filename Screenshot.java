@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 
 import android.graphics.Bitmap;
 
+import android.media.MediaActionSound;
 import android.media.MediaScannerConnection;
 
 import android.os.AsyncTask;
@@ -66,10 +67,17 @@ public class Screenshot {
     private Activity activity;
     private Context context;
     private static final String LOG_TAG = "Screenshot";
-    private String fileName;
+    private static final String CHANNEL_ID = "Screenshot_Channel_ID";
     private Bitmap bitmapBackup;
     private LinearLayout layout;
     private ImageView imageView;
+    private MediaActionSound takeSound;
+    private OnResultListener onResultListener;
+    private final Handler androidUIHandler = new Handler();
+    private NotificationManagerCompat mNotificationManagerCompat;
+    private PackageManager packageManager;
+    
+    private String fileName;
     private boolean preview;
     private boolean notification;
     private String notificationTitle;
@@ -79,10 +87,6 @@ public class Screenshot {
     private String filePathBackup;
     private String fileNameBackup;
     private float dimAmount;
-    private OnResultListener onResultListener;
-    private final Handler androidUIHandler = new Handler();
-    private NotificationManagerCompat mNotificationManagerCompat;
-    private PackageManager packageManager;
     private String currentPackageName;
     private int readPermission;
     private int writePermission;
@@ -108,6 +112,10 @@ public class Screenshot {
       this.currentPackageName = this.context.getPackageName().toString();
       this.readPermission = packageManager.checkPermission("android.permission.READ_EXTERNAL_STORAGE", this.currentPackageName);
       this.writePermission = packageManager.checkPermission("android.permission.WRITE_EXTERNAL_STORAGE", this.currentPackageName);
+          if (VERSION.SDK_INT >= 16) {
+              takeSound = new MediaActionSound();
+              takeSound.load(MediaActionSound.SHUTTER_CLICK);
+          }
       Log.d(LOG_TAG,"Screenshot Created");
     }
 
@@ -202,6 +210,9 @@ public class Screenshot {
     //image is null should never happen
         if (this.preview) {
             Preview();
+        }
+        if (VERSION.SDK_INT >= 16) {
+        	takeSound.play(MediaActionSound.SHUTTER_CLICK);
         }
         if (this.notification) {
         	NewNotification();
@@ -322,7 +333,7 @@ public class Screenshot {
     private void NewNotification() {
       int ID = (int) System.currentTimeMillis();
     	
-      NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+      NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "CHANNEL_ID")
       // support v4 version 26.1.0
       //.setChannelId(String.valueOf(System.currentTimeMillis()))
       .setContentTitle(notificationTitle)

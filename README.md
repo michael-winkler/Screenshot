@@ -143,7 +143,7 @@ public class YourClass extends Activity {
 ```
 
 ## Download(jar)
-Version 1.01<br>
+Version 1.02<br>
 [Screenshot.jar](Screenshot.jar)
 
 ## Known bugs/issues

@@ -93,6 +93,9 @@ Public methods
 | `void` | AllowScreenshots(boolean enabled) | *This feature allows users of your app to make or ban screenshots of their app.<br>If disabled and a person tries to make a screenshot, they will receive then a default system message that this is not possible.* | - |  1 |
 | `void` | setDimAmount(float amount) | *Set the amount of dim behind the preview window if* `ShowPreview(...)` *is enabled. Use '0.0' for no dim and '1.0' for full dim.* | 0.5f |  14 |
 | `float` | getDimAmount() | *Returns the amount from `setDimAmount(...)` .* | - |  14 |
+| `boolean` | arePermissionsGranted() | *Returns true if the write and read permission is granted, else false.* | - |  1 |
+| `boolean` | isReadPermissionGranted() | *Returns true if the read permission is granted, else false.* | - |  1 |
+| `boolean` | isWritePermissionGranted() | *Returns true if the write permission is granted, else false.* | - |  1 |
 
 *You do not need to add SDK version checks by yourself. This does the library for you.*
 

@@ -151,18 +151,14 @@ public class Screenshot {
     
     public boolean arePermissionsGranted() {
       return (this.readPermission == PackageManager.PERMISSION_GRANTED &&
-        	  this.writePermission == PackageManager.PERMISSION_GRANTED);
+              this.writePermission == PackageManager.PERMISSION_GRANTED);
     }
     
     public boolean isReadPermissionGranted() {
-      String currentPackageName = this.context.getPackageName().toString();
-      int readPermission = packageManager.checkPermission("android.permission.READ_EXTERNAL_STORAGE", currentPackageName);
       return (this.readPermission == PackageManager.PERMISSION_GRANTED);
     }
     
     public boolean isWritePermissionGranted() {
-      String currentPackageName = this.context.getPackageName().toString();
-      int writePermission = packageManager.checkPermission("android.permission.WRITE_EXTERNAL_STORAGE", currentPackageName);
       return (writePermission == PackageManager.PERMISSION_GRANTED);
     }
     
@@ -212,10 +208,10 @@ public class Screenshot {
             Preview();
         }
         if (VERSION.SDK_INT >= 16) {
-        	takeSound.play(MediaActionSound.SHUTTER_CLICK);
+            takeSound.play(MediaActionSound.SHUTTER_CLICK);
         }
         if (this.notification) {
-        	NewNotification();
+            NewNotification();
         }  
         if (onResultListener != null) {
             onResultListener.result(true, filePathBackup, bitmapBackup);
@@ -227,7 +223,7 @@ public class Screenshot {
     }
 	
     public boolean ShowPreview() {
-    return this.preview;
+      return this.preview;
     }
 	
     public void ShowNotification(boolean enabled) {
@@ -243,7 +239,7 @@ public class Screenshot {
     }
 	
     public String NotificationTitle() {
-    return this.notificationTitle;
+      return this.notificationTitle;
     }
 	
     public void NotificationShareTitle(String title){
@@ -251,7 +247,7 @@ public class Screenshot {
     }
 	
     public String NotificationShareTitle() {
-    return this.notificationShareTitle;
+      return this.notificationShareTitle;
     }
 	
     public void NotificationBigStyle(boolean enabled){
@@ -259,7 +255,7 @@ public class Screenshot {
     }
 	
     public boolean NotificationBigStyle() {
-    return this.notificationBigStyle;
+      return this.notificationBigStyle;
     }
     
     public void NotificationShareButton(boolean enabled){

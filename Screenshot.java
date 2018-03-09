@@ -204,11 +204,11 @@ public class Screenshot {
     filePathBackup = (image != null) ? image.getAbsolutePath() : "There was a problem";
     fileNameBackup = (image != null) ? image.getName() : "There was a problem";
     //image is null should never happen
-        if (this.preview) {
-            Preview();
-        }
         if (VERSION.SDK_INT >= 16) {
             takeSound.play(MediaActionSound.SHUTTER_CLICK);
+        }
+        if (this.preview) {
+            Preview();
         }
         if (this.notification) {
             NewNotification();

@@ -330,12 +330,13 @@ public class Screenshot {
     private void NewNotification() {
       int ID = (int) System.currentTimeMillis();
     	
-      NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+      NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
       .setContentTitle(notificationTitle)
       .setContentText(fileNameBackup)
       .setSmallIcon(android.R.drawable.ic_menu_gallery)
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
       .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+      .setChannelId(CHANNEL_ID)
       .setAutoCancel(true);
       
       if (VERSION.SDK_INT >= 16) {

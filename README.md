@@ -123,15 +123,15 @@ public class YourClass extends Activity {
 
     public YourClass (...) {
       this.context = getContext();
-      Initialize();
+      initialize();
     }
     
-    private void Initialize() {
+    private void initialize() {
       txt = (TextView)findViewById(R.id.editText);
       screenshot = new Screenshot(this.context);
     }
 
-    public void Take() {
+    public void take() {
       screenshot.notificationTitle("My screenshot title");
       screenshot.setCallback(new Screenshot.OnResultListener() {
         @Override

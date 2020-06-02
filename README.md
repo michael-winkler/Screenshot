@@ -147,15 +147,9 @@ public class YourClass extends Activity {
 }
 ```
 
-## Download(jar)
-Version 1.02<br>
-[Screenshot.jar](Screenshot.jar)
-
-## Known bugs/issues
-You can find [here](https://github.com/NmdOfficial/Screenshot/issues) the known bugs/issues
-
-## Changelog
-Watch [here](Changelog.md) the version changes
+## Download
+[Screenshot.jar](Screenshot.jar)    
+[Screenshot.aar](Screenshot.aar)
 
 ## Screenshots
 ![animation](https://github.com/NmdOfficial/Screenshot/blob/master/Images/Animation.gif)

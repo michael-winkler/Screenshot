@@ -1,11 +1,13 @@
 # Screenshot
 
-[![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=16)
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 
-A new and nice working android library to take screenshots which provides many functions.<br>
-If enabled you will see a screenshot preview like you know it from the official android screenshot option.<br>
-While the screenshot is being taken, you will also hear the shutter click sound for android 4.1+ devices.<br>
+A new and nice working android library to take screenshots which provides many functions.    
+If enabled you will see a screenshot preview like you know it from the official android screenshot option.    
+While the screenshot is being taken, you will also hear the shutter click sound for android 4.1+ devices.    
+
+This library uses Android X depencies and is written in Java/Kotlin.
 
 
 ## Usage
@@ -19,12 +21,12 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.NmdOfficial:Screenshot:-SNAPSHOT'
+    implementation 'com.github.Mika-89:Screenshot:master-SNAPSHOT'
 }
 ```
 
 ```java
-import com.nmd.android.support.Screenshot;
+import com.nmd.screenshot.Screenshot;
 ```
 
 | Public constructors |
@@ -49,7 +51,7 @@ AndroidMainfest.xml
 
 Don't forget to set MIN and TARGET SDK values:
 ```java
-<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="xx"/>
+<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="xx"/>
 ```
 
 ## Interface
@@ -77,23 +79,23 @@ Public methods
 
 | type | function | description | default value | min api |
 | --- | --- | --- | --- | --- |
-| `void` | TakeScreenshot() | *Take a screenshot of the current visible screen.* | - |  14 |
-| `void` | TakeScreenshotFromView() | *Take a screenshot of any visible view.* | - |  14 |
+| `void` | takeScreenshot() | *Take a screenshot of the current visible screen.* | - |  14 |
+| `void` | takeScreenshotFromView() | *Take a screenshot of any visible view.* | - |  14 |
 | `void` | setFileName(String name) | *The filename for the taken screenshot.* | \"Screenshot.png\" |  14 |
 | `string` | getFileName() | *Returns the given screenshot filename.* | - |  14 |
-| `void` | ShowPreview(boolean enabled) | *If enabled you will see a short preview animation after the screenshot is taken.* | true |  14 |
-| `boolean` | ShowPreview() | *Returns true/false if* `ShowPreview(...)` *is enabled/disabled.* | - |  14 |
-| `void` | ShowNotification(boolean enabled) | *If enabled you will see a notification in the statusbar after the screenshot is taken.* | true |  14 |
-| `boolean` | ShowNotification() | *Returns true/false if* `ShowNotification(...)` *is enabled/disabled.* | - |  14 |
-| `void` | NotificationTitle(String name) | *The title text for the notification.* | \"Screenshot..\" |  14 |
-| `string` | NotificationTitle() | *Returns the given notification title text.* | - |  14 |
-| `void` | NotificationShareTitle(String name) | *The share button text for the notification if* `Show Notification(...)` *is enabled.* | "Share" |   16 |
-| `string` | NotificationShareTitle() | *Returns the given notification share title text.* | - |  16 |
-| `void` | NotificationBigStyle(boolean enabled) | *If enabled you will see a notification with \"big style\" in the statusbar after the screenshot is taken.* | true |  16 |
-| `boolean` | NotificationBigStyle() | *Returns true/false if* `NotificationBigStyle(...)` *is enabled/disabled.* | - |  16 |
-| `void` | NotificationShareButton(boolean enabled) | *If enabled you will see a notification with a share button after the screenshot is taken.* | true |  16 |
-| `boolean` | NotificationShareButton() | *Returns true/false if* `NotificationShareButton(...)` *is enabled/disabled.* | - |  16 |
-| `void` | AllowScreenshots(boolean enabled) | *This feature allows users of your app to make or ban screenshots of their app.<br>If disabled and a person tries to make a screenshot, they will receive then a default system message that this is not possible.* | - |  1 |
+| `void` | showPreview(boolean enabled) | *If enabled you will see a short preview animation after the screenshot is taken.* | true |  14 |
+| `boolean` | showPreview() | *Returns true/false if* `ShowPreview(...)` *is enabled/disabled.* | - |  14 |
+| `void` | showNotification(boolean enabled) | *If enabled you will see a notification in the statusbar after the screenshot is taken.* | true |  14 |
+| `boolean` | showNotification() | *Returns true/false if* `ShowNotification(...)` *is enabled/disabled.* | - |  14 |
+| `void` | notificationTitle(String name) | *The title text for the notification.* | \"Screenshot..\" |  14 |
+| `string` | notificationTitle() | *Returns the given notification title text.* | - |  14 |
+| `void` | notificationShareTitle(String name) | *The share button text for the notification if* `Show Notification(...)` *is enabled.* | "Share" |   16 |
+| `string` | notificationShareTitle() | *Returns the given notification share title text.* | - |  16 |
+| `void` | notificationBigStyle(boolean enabled) | *If enabled you will see a notification with \"big style\" in the statusbar after the screenshot is taken.* | true |  16 |
+| `boolean` | notificationBigStyle() | *Returns true/false if* `NotificationBigStyle(...)` *is enabled/disabled.* | - |  16 |
+| `void` | notificationShareButton(boolean enabled) | *If enabled you will see a notification with a share button after the screenshot is taken.* | true |  16 |
+| `boolean` | notificationShareButton() | *Returns true/false if* `NotificationShareButton(...)` *is enabled/disabled.* | - |  16 |
+| `void` | allowScreenshots(boolean enabled) | *This feature allows users of your app to make or ban screenshots of their app.<br>If disabled and a person tries to make a screenshot, they will receive then a default system message that this is not possible.* | - |  1 |
 | `void` | setDimAmount(float amount) | *Set the amount of dim behind the preview window if* `ShowPreview(...)` *is enabled. Use '0.0' for no dim and '1.0' for full dim.* | 0.5f |  14 |
 | `float` | getDimAmount() | *Returns the amount from `setDimAmount(...)` .* | - |  14 |
 | `boolean` | arePermissionsGranted() | *Returns true if the write and read permission is granted, else false.* | - |  1 |
@@ -111,7 +113,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.TextView;
 import android.graphics.Color;
-import com.nmd.android.support.Screenshot;
+import com.nmd.screenshot.Screenshot;
 ...
 
 public class YourClass extends Activity {
@@ -130,7 +132,7 @@ public class YourClass extends Activity {
     }
 
     public void Take() {
-      screenshot.NotificationTitle("My screenshot title");
+      screenshot.notificationTitle("My screenshot title");
       screenshot.setCallback(new Screenshot.OnResultListener() {
         @Override
         public void result(boolean success, String filePath, Bitmap bitmap) {
@@ -140,7 +142,7 @@ public class YourClass extends Activity {
         }
       });
       //After you have done your settings let's take the screenshot
-      screenshot.TakeScreenshot();
+      screenshot.takeScreenshot();
     }
 }
 ```
@@ -160,7 +162,7 @@ Watch [here](Changelog.md) the version changes
 
 ## License
 ```
-Copyright 2018 Author @NMD [Next Mobile Development]
+Copyright 2020 Author @NMD [Next Mobile Development]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -178,8 +180,4 @@ limitations under the License.
 If you like this library feel free to "star" it:<br>
 ![star](https://github.com/NmdOfficial/Screenshot/blob/master/Images/star.png)
 
-Offical E-MAIL:<br>
-[nmdofficialhelp@gmail.com](mailto:nmdofficialhelp@gmail.com)
-
-
-This library has been successfully tested with the latest version of Android Studio.
+This library has been successfully tested with the latest version of Android Studio (4.0).

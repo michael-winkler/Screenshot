@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Author @NMD [Next Mobile Development]
+ * Copyright Author @NMD [Next Mobile Development - Michael Winkler]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,92 @@
  */
 package com.nmd.screenshot
 
-import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
+import android.media.MediaActionSound
+import android.net.Uri
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
-import android.widget.ImageView
-import androidx.annotation.RequiresApi
+import android.view.PixelCopy
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.nmd.screenshot.helpers.Helper
+import com.nmd.screenshot.databinding.DialogPreviewBinding
+import java.io.File
 
-@Suppress("unused")
-class Screenshot(private val activity: Activity) {
-    var onResultListener: OnResultListener? = null
+class Screenshot(private val appCompatActivity: AppCompatActivity) {
 
-    private var internalFileName: String = "Screenshot"
+    private var lastFileObject: File? = null
+    private var internalSaveScreenshot = true
     private var internalShutterSound = false
-    private var internalPreview = false
-    private var internalBlurBackgroundPreview = false
+    private var internalPreview = true
+    private var internalDimAmount = 0.5f
+    private var internalFilename = "Screenshot.png"
+
+    /**
+     * If set to true a preview dialog of the screenshot will be shown.
+     * Default is true.
+     */
+    var preview: Boolean
+        get() {
+            return internalPreview
+        }
+        set(enabled) {
+            internalPreview = enabled
+        }
+
+    /**
+     * If set to true a shutter sound will be played.
+     * Default is false.
+     */
+    var shutterSound: Boolean
+        get() {
+            return internalShutterSound
+        }
+        set(enabled) {
+            internalShutterSound = enabled
+        }
+
+    /**
+     * If set to true the taken screenshot will be saved into the internal app directory.
+     * Default is true.
+     */
+    var saveScreenshot: Boolean
+        get() {
+            return internalSaveScreenshot
+        }
+        set(enabled) {
+            internalSaveScreenshot = enabled
+        }
+
+    /**
+     * Set the amount of dim behind the preview dialog.
+     * Use '0.0f' for no dim and '1.0f' for full dim.
+     * Default is 0.5f.
+     */
+    var dimAmount: Float
+        get() {
+            return internalDimAmount
+        }
+        set(amount) {
+            internalDimAmount = amount
+        }
+
+    /**
+     * The filename for the taken screenshot.
+     * Default is "Screenshot.png".
+     */
+    var fileName: String
+        get() {
+            return internalFilename
+        }
+        set(name) {
+            internalFilename = name
+        }
 
     /**
      * The Screenshot OnResultListener.
@@ -44,153 +109,126 @@ class Screenshot(private val activity: Activity) {
         /**
          * The Screenshot OnResultListener.
          *
-         * @param success Boolean.
-         * @param filePath String.
-         * @param bitmap Bitmap?.
+         * @param success Boolean
+         * @param bitmap Bitmap?
          */
-        fun result(success: Boolean, filePath: String, bitmap: Bitmap?)
+        fun result(success: Boolean, bitmap: Bitmap?)
     }
 
     /**
      * Takes a screenshot from the current users display.
      */
-    fun takeScreenshot() {
-        val view = activity.window.decorView.rootView
-        take(view)
+    fun takeScreenshot(onResultListener: OnResultListener?) {
+        val view = appCompatActivity.window.decorView.rootView
+        val bitmap = view.drawToBitmap()
+
+        PixelCopy.request(
+            appCompatActivity.window, bitmap,
+            {
+                onResultListener?.result(it == PixelCopy.SUCCESS, bitmap)
+
+                if (it == PixelCopy.SUCCESS) {
+                    if (internalShutterSound) {
+                        MediaActionSound().apply {
+                            load(MediaActionSound.SHUTTER_CLICK)
+                            play(MediaActionSound.SHUTTER_CLICK)
+                        }
+                    }
+                    if (internalPreview) {
+                        showDialogPreview(bitmap)
+                    }
+                    if (saveScreenshot) {
+                        bitmap.saveScreenshotToAppDirectory()
+                    } else {
+                        lastFileObject = null
+                    }
+                }
+            }, Handler(Looper.getMainLooper())
+        )
     }
 
     /**
-     * The view of which the screenshot is taken from.
+     * Use this method to display a Bitmap inside the Material Dialog.
      *
-     * @param view View.
+     * @param bitmap Bitmap?
+     * @param cancelable Boolean = false
      */
-    fun takeScreenshot(view: View) {
-        take(view)
+    fun showDialogPreview(bitmap: Bitmap?, cancelable: Boolean = false) {
+        if (appCompatActivity.isFinishing || appCompatActivity.isDestroyed) return
+        bitmap ?: return
+
+        val binding: DialogPreviewBinding =
+            DialogPreviewBinding.inflate(LayoutInflater.from(appCompatActivity))
+        binding.dialogPreviewImageView.setImageBitmap(bitmap)
+
+        val alertDialog =
+            MaterialAlertDialogBuilder(appCompatActivity, R.style.MaterialThemeDialog).create()
+                .apply {
+                    setView(binding.root)
+                    setCancelable(cancelable)
+                    setCanceledOnTouchOutside(cancelable)
+
+                    window?.setDimAmount(dimAmount)
+                    show()
+                }
+        if (!cancelable) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                alertDialog.dismiss()
+            }, 1500)
+        }
     }
 
-    private fun take(view: View) {
-        Handler(Looper.getMainLooper()).post {
-            try {
-                Helper.saveBitmapToFile(
-                    bitmap = view.drawToBitmap(),
-                    activity = activity,
-                    internalFileName = internalFileName,
-                    internalPreview = internalPreview,
-                    internalShutterSound = internalShutterSound,
-                    onResultListener = onResultListener
-                ) { preview() }
-            } catch (e: IllegalStateException) {
-                Helper.saveBitmapToFile(
-                    bitmap = null,
-                    activity = activity,
-                    internalFileName = internalFileName,
-                    internalPreview = internalPreview,
-                    internalShutterSound = internalShutterSound,
-                    onResultListener = onResultListener
-                ) { preview() }
+    /**
+     * Use this method to open the last taken screenshot file.
+     *
+     * @param showErrorToast Boolean = false
+     */
+    fun openLastScreenshot(showErrorToast: Boolean = false) {
+        try {
+            lastFileObject?.let { lastFile ->
+                val fileUri: Uri = FileProvider.getUriForFile(
+                    appCompatActivity,
+                    appCompatActivity.packageName + ".provider",
+                    lastFile
+                )
+
+                val intent = Intent(Intent.ACTION_VIEW, fileUri).apply {
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                appCompatActivity.startActivity(intent)
+            }
+        } catch (e: Exception) {
+            if (showErrorToast) {
+                Toast.makeText(appCompatActivity, e.message ?: "Exception!", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
 
-    var fileName: String
-        get() {
-            return internalFileName
-        }
-        /**
-         * The filename of the new taken screenshot.
-         *
-         * @param name String.
-         */
-        set(name) {
-            internalFileName = name
-        }
-
-    var preview: Boolean
-        get() {
-            return internalPreview
-        }
-        /**
-         * If set to true a preview dialog of the screenshot will be shown.
-         *
-         * @param enabled Boolean.
-         */
-        set(enabled) {
-            internalPreview = enabled
-        }
-
-    var shutterSound: Boolean
-        get() {
-            return internalShutterSound
-        }
-        /**
-         * If set to true a shutter sound will be played.
-         *
-         * @param enabled Boolean.
-         */
-        set(enabled) {
-            internalShutterSound = enabled
-        }
-
-
-    var blurBackgroundPreview: Boolean
-
-        get() {
-            return internalBlurBackgroundPreview
-        }
-        /**
-         * If set to true the preview dialog will blur the background.
-         * Requires Android 12+ to work.
-         *
-         * @param enabled Boolean.
-         */
-        @RequiresApi(31)
-        set(enabled) {
-            internalBlurBackgroundPreview = enabled
-        }
-
-    /**
-     * You can use this option in your app to enable/disable that users can take a screenshot
-     * from your app by the system screenshot method.
-     *
-     * @param enabled Boolean.
-     */
-    fun allowScreenshots(enabled: Boolean) {
-        if (enabled) {
-            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+    private fun getFileObject(): File? {
+        val name = if (fileName.trim().isEmpty()) {
+            "Screenshot.png"
         } else {
-            activity.window.setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE
-            )
+            fileName
         }
+
+        lastFileObject = File(
+            appCompatActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "${name}.png"
+        )
+        return lastFileObject
     }
 
-    private fun preview() {
-        activity.let {
-            if (it.isFinishing || it.isDestroyed) return
+    private fun Bitmap?.saveScreenshotToAppDirectory() {
+        this ?: return
+        getFileObject()?.writeBitmap(this)
+    }
 
-            val view: View = LayoutInflater.from(it)
-                .inflate(R.layout.dialog_preview, it.findViewById(android.R.id.content), false)
-            val imageView: ImageView = view.findViewById(R.id.dialog_preview_image_view)
-            imageView.setImageBitmap(Helper.getBitmap(activity, fileName))
-
-            val alertDialog =
-                MaterialAlertDialogBuilder(activity, R.style.DialogRoundTheme).create().apply {
-                    setView(view)
-                    setCancelable(false)
-                    setCanceledOnTouchOutside(false)
-                    if (internalBlurBackgroundPreview) {
-                        Helper.blurAlertDialog(this)
-                    }
-                    show()
-                }
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                alertDialog.dismiss()
-            }, 1250)
-
+    private fun File.writeBitmap(bitmap: Bitmap) {
+        outputStream().use { out ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            out.flush()
         }
-
     }
 
 }

@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DialogRoundTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="MaterialThemeDialog" parent="MaterialAlertDialog.Material3">
         <item name="android:background">@color/dialog_background_color</item>
-        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
-    </style>
-
-    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.MaterialComponents">
-        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
-        <item name="shapeAppearanceOverlay">@null</item>
-    </style>
-
-    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
+        <item name="android:layout">@layout/m3_alert_dialog</item>
     </style>
 
 </resources>

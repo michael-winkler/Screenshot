@@ -2,27 +2,44 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:subtitleCentered="true"
-            app:title="Screenshot Example"
-            app:titleCentered="true"
-            app:titleTextColor="@android:color/white" />
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:background="@color/colorBackground"
+            app:collapsedTitleGravity="center"
+            app:collapsedTitleTextColor="@color/colorCollapsedText"
+            app:contentScrim="@color/colorBackgroundCollapse"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            app:expandedTitleTextColor="@color/colorExpandedText"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            app:scrimAnimationDuration="50"
+            app:statusBarScrim="@color/colorBackgroundCollapse"
+            app:title="@string/screenshot_example"
+            app:titleCollapseMode="scale">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStart="0dp"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -30,26 +47,36 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:text="Options" />
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/colorBackgroundCardBlue">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp"
+                    android:text="@string/welcome_to_the"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/OptionsHeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:text="@string/options" />
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/Card"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:contentPadding="8dp"
-                app:strokeColor="@color/material_on_surface_stroke"
-                app:strokeWidth="1dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,88 +84,80 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/sample_option_1"
+                        android:id="@+id/sampleOption1"
+                        style="@style/Checkbox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Show preview?" />
+                        android:checked="true"
+                        android:text="@string/option_1" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        style="@style/OptionsItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="32dp"
-                        android:text="If enabled you will see a screenshot preview dialog." />
+                        android:text="@string/option_1_text" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/sample_option_2"
+                        android:id="@+id/sampleOption2"
+                        style="@style/Checkbox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Play shutter sound?" />
+                        android:text="@string/option_2" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        style="@style/OptionsItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="32dp"
-                        android:text="If enabled a shutter shound will be played when the screenshot is taken." />
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/sample_option_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Allow app screenshots by users system?" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="32dp"
-                        android:text="You can use this option in your app to enable/disable that users can take a screenshot from your app by the system screenshot method." />
+                        android:text="@string/option_2_text" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/sample_take_screenshot"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:layout_width="wrap_content"
+                android:id="@+id/sampleTakeScreenshot"
+                style="@style/MaterialButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Take screenshot!"
-                android:textAllCaps="false" />
+                android:text="@string/take_screenshot"
+                app:icon="@drawable/cellphone_screenshot" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sampleTakeScreenshotOpenLast"
+                style="@style/MaterialButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/open_last_screenshot"
+                app:icon="@drawable/view_gallery_outline" />
 
             <com.google.android.material.textview.MaterialTextView
+                style="@style/OptionsHeadline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:text="Results" />
+                android:text="@string/screenshot_preview" />
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:contentPadding="8dp"
-                app:strokeColor="@color/material_on_surface_stroke"
-                app:strokeWidth="1dp">
+                app:contentPadding="0dp">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/sampleTakeScreenshotPreview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:contentDescription="@string/screenshot_preview_description" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="Click the button first!"
-                        android:textAlignment="center" />
-
-                </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/sampleTakeScreenshotPreviewText"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="16dp"
+                    android:text="@string/screenshot_preview_text"
+                    app:drawableTopCompat="@drawable/cellphone_screenshot" />
 
             </com.google.android.material.card.MaterialCardView>
 

@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <!-- https://www.color-hex.com/color/3b5ca3 -->
+    <color name="colorBackground">#F2F2F2</color>
+    <color name="colorBackgroundCollapse">#E2E2E2</color>
+    <color name="colorBackgroundCard">@color/colorWhite</color>
+    <color name="colorBackgroundCardBlue">#D7DEEC</color>
+    <color name="colorCharcoalGray">#6C6868</color>
+    <color name="colorCheckBoxTextColor">#474747</color>
+    <color name="colorCollapsedText">@color/colorCheckBoxTextColor</color>
+    <color name="colorExpandedText">@color/colorCharcoalGray</color>
+
+    <color name="colorText">@color/colorCheckBoxTextColor</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="colorPrimary">#3B5CA3</color>
+    <color name="colorPrimaryDark">@color/colorPrimary</color>
+    <color name="colorAccent">@color/colorPrimary</color>
 </resources>

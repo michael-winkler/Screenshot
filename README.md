@@ -132,6 +132,9 @@ class MainActivity : AppCompatActivity() {
 ## Screenshots
 ![Screenshot](https://github.com/michael-winkler/Screenshot/blob/master/Images/Screenshot.png)
 
+## Download Sample App
+https://github.com/michael-winkler/Screenshot/releases/download/1.0.0/app-debug.apk
+
 ## License
 ```
 Copyright Author @NMD [Next Mobile Development - Michael Winkler]

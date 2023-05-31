@@ -1,6 +1,8 @@
 # Screenshot
 
 [![](https://jitpack.io/v/michael-winkler/Screenshot.svg)](https://jitpack.io/#michael-winkler/Screenshot)
+[![Last commit](https://img.shields.io/github/last-commit/michael-winkler/Screenshot?style=flat)](https://github.com/michael-winkler/Screenshot/commits)
+![GitHub all releases](https://img.shields.io/github/downloads/michael-winkler/Screenshot/total)
 [![API](https://img.shields.io/badge/API-26%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=26)
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 

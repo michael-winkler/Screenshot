@@ -23,34 +23,35 @@ class MainActivity : AppCompatActivity() {
     private fun initialize() {
         val screenshot = Screenshot(this)
 
-        binding.sampleTakeScreenshot.setOnClickListener {
-            screenshot.preview = binding.sampleOption1.isChecked
-            screenshot.shutterSound = binding.sampleOption2.isChecked
-            screenshot.takeScreenshot(object : Screenshot.OnResultListener {
-                override fun result(success: Boolean, bitmap: Bitmap?) {
-                    if (success) {
-                        binding.sampleTakeScreenshotPreview.setImageBitmap(bitmap)
-                        binding.sampleTakeScreenshotPreviewText.visibility = View.GONE
+        with(binding) {
+            sampleTakeScreenshot.setOnClickListener {
+                screenshot.preview = sampleOption1.isChecked
+                screenshot.shutterSound = sampleOption2.isChecked
+                screenshot.takeScreenshot(object : Screenshot.OnResultListener {
+                    override fun result(success: Boolean, bitmap: Bitmap?) {
+                        if (success) {
+                            sampleTakeScreenshotPreview.setImageBitmap(bitmap)
+                            sampleTakeScreenshotPreviewText.visibility = View.GONE
 
-                        binding.sampleTakeScreenshotOpenLast.setOnClickListener {
-                            screenshot.openLastScreenshot(showErrorToast = true)
+                            sampleTakeScreenshotOpenLast.setOnClickListener {
+                                screenshot.openLastScreenshot(showErrorToast = true)
+                            }
+
+                            sampleTakeScreenshotPreview.setOnClickListener {
+                                screenshot.showDialogPreview(bitmap = bitmap, cancelable = true)
+                            }
+                        } else {
+                            sampleTakeScreenshotPreview.setImageBitmap(null)
+                            sampleTakeScreenshotPreviewText.visibility = View.VISIBLE
+
+                            sampleTakeScreenshotOpenLast.setOnClickListener(null)
+                            sampleTakeScreenshotPreview.setOnClickListener(null)
                         }
-
-                        binding.sampleTakeScreenshotPreview.setOnClickListener {
-                            screenshot.showDialogPreview(bitmap = bitmap, cancelable = true)
-                        }
-                    } else {
-                        binding.sampleTakeScreenshotPreview.setImageBitmap(null)
-                        binding.sampleTakeScreenshotPreviewText.visibility = View.VISIBLE
-
-                        binding.sampleTakeScreenshotOpenLast.setOnClickListener(null)
-                        binding.sampleTakeScreenshotPreview.setOnClickListener(null)
+                        sampleTakeScreenshotOpenLast.isEnabled = success
                     }
-                    binding.sampleTakeScreenshotOpenLast.isEnabled = success
-                }
-            })
+                })
+            }
         }
-
     }
 
 }

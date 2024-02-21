@@ -1,19 +1,18 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    compileSdkVersion 33
+    namespace 'com.nmd.screenshotExample'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.nmd.screenshot"
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdk 26
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
-    }
-
-    buildFeatures {
-        viewBinding true
     }
 
     buildTypes {
@@ -22,16 +21,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.nmd.screenshotExample'
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.8.0'
-
-    implementation project(':library')
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation project(path: ':library')
 }

@@ -32,7 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nmd.screenshot.databinding.DialogPreviewBinding
 import java.io.File
 
-class Screenshot(private val appCompatActivity: AppCompatActivity) {
+class Screenshot(private val appCompatActivity: AppCompatActivity?) {
 
     private var lastFileObject: File? = null
     private var internalSaveScreenshot = true
@@ -119,15 +119,28 @@ class Screenshot(private val appCompatActivity: AppCompatActivity) {
      * Takes a screenshot from the current users display.
      */
     fun takeScreenshot(onResultListener: OnResultListener?) {
-        val view = appCompatActivity.window.decorView.rootView
-        val bitmap = view.drawToBitmap()
+        val view = appCompatActivity?.window?.decorView?.rootView
+        if (appCompatActivity == null || view == null) {
+            onResultListener?.result(success = false, bitmap = null)
+            return
+        }
+        val bitmap = try {
+            view.drawToBitmap()
+        } catch (ignored: IllegalStateException) {
+            null
+        }
+        if (bitmap == null) {
+            onResultListener?.result(success = false, bitmap = null)
+            return
+        }
 
         PixelCopy.request(
             appCompatActivity.window, bitmap,
             {
-                onResultListener?.result(it == PixelCopy.SUCCESS, bitmap)
+                val success = it == PixelCopy.SUCCESS
+                onResultListener?.result(success = success, bitmap = bitmap)
 
-                if (it == PixelCopy.SUCCESS) {
+                if (success) {
                     if (internalShutterSound) {
                         MediaActionSound().apply {
                             load(MediaActionSound.SHUTTER_CLICK)
@@ -154,9 +167,10 @@ class Screenshot(private val appCompatActivity: AppCompatActivity) {
      * @param cancelable Boolean = false
      */
     fun showDialogPreview(bitmap: Bitmap?, cancelable: Boolean = false) {
-        if (appCompatActivity.isFinishing || appCompatActivity.isDestroyed) return
+        appCompatActivity ?: return
         bitmap ?: return
 
+        if (appCompatActivity.isFinishing || appCompatActivity.isDestroyed) return
         val binding: DialogPreviewBinding =
             DialogPreviewBinding.inflate(LayoutInflater.from(appCompatActivity))
         binding.dialogPreviewImageView.setImageBitmap(bitmap)
@@ -185,6 +199,7 @@ class Screenshot(private val appCompatActivity: AppCompatActivity) {
      */
     fun openLastScreenshot(showErrorToast: Boolean = false) {
         try {
+            appCompatActivity ?: return
             lastFileObject?.let { lastFile ->
                 val fileUri: Uri = FileProvider.getUriForFile(
                     appCompatActivity,
@@ -212,10 +227,14 @@ class Screenshot(private val appCompatActivity: AppCompatActivity) {
             fileName
         }
 
-        lastFileObject = File(
-            appCompatActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            "${name}.png"
-        )
+        lastFileObject = if (appCompatActivity == null) {
+            null
+        } else {
+            File(
+                appCompatActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "${name}.png"
+            )
+        }
         return lastFileObject
     }
 

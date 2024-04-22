@@ -25,6 +25,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.PixelCopy
 import android.widget.Toast
+import androidx.annotation.FloatRange
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
@@ -86,7 +87,7 @@ class Screenshot(private val appCompatActivity: AppCompatActivity?) {
         get() {
             return internalDimAmount
         }
-        set(amount) {
+        set(@FloatRange(from = 0.0, to = 1.0) amount) {
             internalDimAmount = amount
         }
 

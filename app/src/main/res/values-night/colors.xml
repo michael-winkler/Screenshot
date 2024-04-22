@@ -6,6 +6,9 @@
     <color name="colorBackgroundCardBlue">#9DADD1</color>
     <color name="colorCollapsedText">@color/colorWhite</color>
     <color name="colorExpandedText">@color/colorPrimary</color>
+    <color name="colorIconTint">@color/colorWhite</color>
 
     <color name="colorText">@color/colorWhite</color>
+    <color name="colorStroke">#505154</color>
+    <color name="colorRipple">#33FFFFFF</color>
 </resources>

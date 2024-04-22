@@ -9,9 +9,13 @@
     <color name="colorCheckBoxTextColor">#474747</color>
     <color name="colorCollapsedText">@color/colorCheckBoxTextColor</color>
     <color name="colorExpandedText">@color/colorCharcoalGray</color>
+    <color name="colorIconTint">@color/colorCharcoalGray</color>
 
     <color name="colorText">@color/colorCheckBoxTextColor</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorStroke">#AFB1B3</color>
+    <color name="colorRipple">#1F000000</color>
 
     <color name="colorPrimary">#3B5CA3</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>

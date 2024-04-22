@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -9,6 +9,8 @@
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/colorBlack</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
 
     <style name="Card" parent="Widget.Material3.CardView.Filled">
@@ -17,14 +19,16 @@
         <item name="cardBackgroundColor">@color/colorBackgroundCard</item>
         <item name="contentPadding">16dp</item>
         <item name="strokeWidth">0dp</item>
-        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">16dp</item>
     </style>
 
     <style name="MaterialButton" parent="Widget.Material3.Button.UnelevatedButton">
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="cornerRadius">16dp</item>
         <item name="iconGravity">textStart</item>
@@ -50,7 +54,8 @@
     <style name="OptionsHeadline">
         <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
@@ -59,6 +64,24 @@
         <item name="android:textColor">@color/colorText</item>
         <item name="android:paddingStart">48dp</item>
         <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/colorBackground</item>
+    </style>
+
+    <style name="BottomSheetDialog.DragHandleView" parent="Widget.Material3.BottomSheet.DragHandle">
+        <item name="tint">@color/colorStroke</item>
+    </style>
+
+    <style name="RippleColor" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="colorControlHighlight">@color/colorRipple</item>
     </style>
 
 </resources>

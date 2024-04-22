@@ -8,7 +8,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:liftOnScrollColor="@null">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             style="?attr/collapsingToolbarLayoutLargeStyle"
@@ -30,8 +31,22 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:contentInsetStart="0dp"
-                app:layout_collapseMode="pin" />
+                app:contentInsetStart="40dp"
+                app:layout_collapseMode="pin">
+
+                <ImageView
+                    android:id="@+id/toolbarSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/screenshot_settings_description"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_cog_outline"
+                    app:tint="@color/colorIconTint" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -63,54 +78,6 @@
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/OptionsHeadline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="0dp"
-                android:text="@string/options" />
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/sampleOption1"
-                        style="@style/Checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/option_1" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        style="@style/OptionsItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/option_1_text" />
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/sampleOption2"
-                        style="@style/Checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/option_2" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        style="@style/OptionsItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/option_2_text" />
-
-                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

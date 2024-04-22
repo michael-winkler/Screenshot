@@ -5,9 +5,12 @@
     <string name="option_1_text">If enabled you will see a screenshot preview dialog.</string>
     <string name="option_2">Play shutter sound?</string>
     <string name="option_2_text">If enabled a shutter shound will be played when the screenshot is taken.</string>
+    <string name="option_3">Save screenshot?</string>
+    <string name="option_3_text">If enabled the taken screenshot will be saved into the internal app directory.</string>
     <string name="take_screenshot">Take screenshot</string>
     <string name="open_last_screenshot">Open last screenshot</string>
     <string name="screenshot_preview">Screenshot preview</string>
+    <string name="screenshot_settings_description">Icon for settings</string>
     <string name="screenshot_example">Screenshot Example</string>
     <string name="screenshot_preview_description">Here you will see the taken screenshot preview</string>
     <string name="screenshot_preview_text">The screenshot preview will be displayed here…</string>

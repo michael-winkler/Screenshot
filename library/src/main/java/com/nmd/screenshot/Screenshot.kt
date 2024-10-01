@@ -36,47 +36,26 @@ import java.io.File
 class Screenshot(private val appCompatActivity: AppCompatActivity?) {
 
     private var lastFileObject: File? = null
-    private var internalSaveScreenshot = true
-    private var internalShutterSound = false
-    private var internalPreview = true
     private var internalDimAmount = 0.5f
-    private var internalFilename = "Screenshot.png"
+    private val defaultFileName = "Screenshot.png"
 
     /**
      * If set to true a preview dialog of the screenshot will be shown.
      * Default is true.
      */
-    var preview: Boolean
-        get() {
-            return internalPreview
-        }
-        set(enabled) {
-            internalPreview = enabled
-        }
+    var preview: Boolean = true
 
     /**
      * If set to true a shutter sound will be played.
      * Default is false.
      */
-    var shutterSound: Boolean
-        get() {
-            return internalShutterSound
-        }
-        set(enabled) {
-            internalShutterSound = enabled
-        }
+    var shutterSound: Boolean = false
 
     /**
      * If set to true the taken screenshot will be saved into the internal app directory.
      * Default is true.
      */
-    var saveScreenshot: Boolean
-        get() {
-            return internalSaveScreenshot
-        }
-        set(enabled) {
-            internalSaveScreenshot = enabled
-        }
+    var saveScreenshot: Boolean = true
 
     /**
      * Set the amount of dim behind the preview dialog.
@@ -95,13 +74,7 @@ class Screenshot(private val appCompatActivity: AppCompatActivity?) {
      * The filename for the taken screenshot.
      * Default is "Screenshot.png".
      */
-    var fileName: String
-        get() {
-            return internalFilename
-        }
-        set(name) {
-            internalFilename = name
-        }
+    var fileName: String = defaultFileName
 
     /**
      * The Screenshot OnResultListener.
@@ -142,13 +115,13 @@ class Screenshot(private val appCompatActivity: AppCompatActivity?) {
                 onResultListener?.result(success = success, bitmap = bitmap)
 
                 if (success) {
-                    if (internalShutterSound) {
+                    if (shutterSound) {
                         MediaActionSound().apply {
                             load(MediaActionSound.SHUTTER_CLICK)
                             play(MediaActionSound.SHUTTER_CLICK)
                         }
                     }
-                    if (internalPreview) {
+                    if (preview) {
                         showDialogPreview(bitmap)
                     }
                     if (saveScreenshot) {
@@ -223,7 +196,7 @@ class Screenshot(private val appCompatActivity: AppCompatActivity?) {
 
     private fun getFileObject(): File? {
         val name = if (fileName.trim().isEmpty()) {
-            "Screenshot.png"
+            defaultFileName
         } else {
             fileName
         }

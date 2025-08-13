@@ -52,63 +52,60 @@ class MainActivity : AppCompatActivity() {
         initialize()
     }
 
-    private fun initialize() {
+    private fun initialize() = with(binding) {
         initSharedPreferences()
-        val screenshot = Screenshot(this)
+        val screenshot = Screenshot(this@MainActivity)
 
-        with(binding) {
-            activityMainSettings.setOnClickListener {
-                val dialog = BottomSheetDialog(this@MainActivity, R.style.BottomSheetDialog)
-                val dialogBinding = BottomSheetDialogSettingsBinding.inflate(layoutInflater)
+        activityMainSettings.setOnClickListener {
+            val dialog = BottomSheetDialog(this@MainActivity, R.style.BottomSheetDialog)
+            val dialogBinding = BottomSheetDialogSettingsBinding.inflate(layoutInflater)
 
-                with(dialogBinding) {
-                    // Reload the saved options
-                    sampleOption1.isChecked = SETTINGS_1.get(defaultValue = true)
-                    sampleOption2.isChecked = SETTINGS_2.get(defaultValue = false)
-                    sampleOption3.isChecked = SETTINGS_3.get(defaultValue = true)
+            with(dialogBinding) {
+                // Reload the saved options
+                sampleOption1.isChecked = SETTINGS_1.get(defaultValue = true)
+                sampleOption2.isChecked = SETTINGS_2.get(defaultValue = false)
+                sampleOption3.isChecked = SETTINGS_3.get(defaultValue = true)
 
-                    dialog.setContentView(root)
-                    dialog.setOnDismissListener {
-                        // Save now the options
-                        SETTINGS_1.save(sampleOption1.isChecked)
-                        SETTINGS_2.save(sampleOption2.isChecked)
-                        SETTINGS_3.save(sampleOption3.isChecked)
-                    }
-                    dialog.show()
+                dialog.setContentView(root)
+                dialog.setOnDismissListener {
+                    // Save now the options
+                    SETTINGS_1.save(sampleOption1.isChecked)
+                    SETTINGS_2.save(sampleOption2.isChecked)
+                    SETTINGS_3.save(sampleOption3.isChecked)
                 }
-            }
-
-            activityMainSampleTakeScreenshot.setOnClickListener {
-                screenshot.preview = SETTINGS_1.get(defaultValue = true)
-                screenshot.shutterSound = SETTINGS_2.get(defaultValue = false)
-                screenshot.saveScreenshot = SETTINGS_3.get(defaultValue = true)
-                screenshot.takeScreenshot(object : Screenshot.OnResultListener {
-                    override fun result(success: Boolean, bitmap: Bitmap?) {
-                        activityMainSampleTakeScreenshotPreviewText.isVisible = !success
-
-                        if (success) {
-                            activityMainSampleTakeScreenshotPreview.setImageBitmap(bitmap)
-
-                            activityMainSampleTakeScreenshotOpenLast.setOnClickListener {
-                                screenshot.openLastScreenshot(showErrorToast = true)
-                            }
-
-                            activityMainSampleTakeScreenshotPreview.setOnClickListener {
-                                screenshot.showDialogPreview(bitmap = bitmap, cancelable = true)
-                            }
-                        } else {
-                            activityMainSampleTakeScreenshotPreview.setImageBitmap(null)
-
-                            activityMainSampleTakeScreenshotOpenLast.setOnClickListener(null)
-                            activityMainSampleTakeScreenshotPreview.setOnClickListener(null)
-                        }
-                        activityMainSampleTakeScreenshotOpenLast.isEnabled =
-                            success && SETTINGS_3.get(defaultValue = true)
-                    }
-                })
+                dialog.show()
             }
         }
 
+        activityMainSampleTakeScreenshot.setOnClickListener {
+            screenshot.preview = SETTINGS_1.get(defaultValue = true)
+            screenshot.shutterSound = SETTINGS_2.get(defaultValue = false)
+            screenshot.saveScreenshot = SETTINGS_3.get(defaultValue = true)
+            screenshot.takeScreenshot(object : Screenshot.OnResultListener {
+                override fun result(success: Boolean, bitmap: Bitmap?) {
+                    activityMainSampleTakeScreenshotPreviewText.isVisible = !success
+
+                    if (success) {
+                        activityMainSampleTakeScreenshotPreview.setImageBitmap(bitmap)
+
+                        activityMainSampleTakeScreenshotOpenLast.setOnClickListener {
+                            screenshot.openLastScreenshot(showErrorToast = true)
+                        }
+
+                        activityMainSampleTakeScreenshotPreview.setOnClickListener {
+                            screenshot.showDialogPreview(bitmap = bitmap, cancelable = true)
+                        }
+                    } else {
+                        activityMainSampleTakeScreenshotPreview.setImageBitmap(null)
+
+                        activityMainSampleTakeScreenshotOpenLast.setOnClickListener(null)
+                        activityMainSampleTakeScreenshotPreview.setOnClickListener(null)
+                    }
+                    activityMainSampleTakeScreenshotOpenLast.isEnabled =
+                        success && SETTINGS_3.get(defaultValue = true)
+                }
+            })
+        }
     }
 
 }

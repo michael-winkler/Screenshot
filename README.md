@@ -24,7 +24,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.michael-winkler:Screenshot:1.1.0'
+    implementation 'com.github.michael-winkler:Screenshot:1.2.0'
 }
 ```
 
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
 ![Screenshot](https://github.com/michael-winkler/Screenshot/blob/master/Images/Screenshot.png)
 
 ## Download Sample App
-https://github.com/michael-winkler/Screenshot/releases/download/1.1.0/app-release.apk
+https://github.com/michael-winkler/Screenshot/releases/download/1.2.0/app-release.apk
 
 ## License
 ```
@@ -188,8 +188,3 @@ limitations under the License.
 ## Last words
 If you like this library feel free to "star" it:<br>
 ![star](https://github.com/michael-winkler/Screenshot/blob/master/Images/star.png)
-
-```
-This library has been successfully tested with:
-Android Studio Ladybug Feature Drop | 2024.2.2 Patch 1
-```

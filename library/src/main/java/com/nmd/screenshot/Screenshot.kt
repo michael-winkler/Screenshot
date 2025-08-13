@@ -100,7 +100,7 @@ class Screenshot(private val appCompatActivity: AppCompatActivity?) {
         }
         val bitmap = try {
             view.drawToBitmap()
-        } catch (ignored: IllegalStateException) {
+        } catch (_: IllegalStateException) {
             null
         }
         if (bitmap == null) {
